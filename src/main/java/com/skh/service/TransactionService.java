@@ -1,7 +1,7 @@
 package com.skh.service;
 
-import java.math.BigDecimal;
+import com.skh.model.Transaction;
 
 public interface TransactionService {
-	void transfer(long fromAcc, long toAcc, BigDecimal amount, String currency);
+	void make(Transaction transaction);
 }

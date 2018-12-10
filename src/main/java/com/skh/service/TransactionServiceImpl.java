@@ -1,13 +1,19 @@
 package com.skh.service;
 
-import java.math.BigDecimal;
+import com.skh.model.Transaction;
 
-public class TransactionServiceImpl implements TransactionService{
+public class TransactionServiceImpl implements TransactionService {
 
 	@Override
-	public void transfer(long fromAcc, long toAcc, BigDecimal amount, String currency) {
-		// TODO Auto-generated method stub
-		
+	public void make(Transaction transaction) {
+		/**
+		 * TODO: check same account
+		 * check insufficient fund
+		 * check do accounts exist
+		 * convert to currencies
+		 * lock
+		 */
+
 	}
 
 }
