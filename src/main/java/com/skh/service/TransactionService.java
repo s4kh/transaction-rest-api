@@ -1,4 +1,4 @@
-package com.skh.services;
+package com.skh.service;
 
 import java.math.BigDecimal;
 

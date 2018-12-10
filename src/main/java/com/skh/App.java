@@ -1,9 +1,20 @@
 package com.skh;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+
+import com.skh.service.AccountService;
+import com.skh.service.TransactionService;
 
 public class App {
+
+	private static AccountService accService;
+	private static TransactionService trxService;
+
 	public static void main(String[] args) {
-		get("/hello", (req, res) -> "Hello World");
+
+		get("/account/:id", (req, res) -> {
+			long accId = Long.parseLong(req.params("id"));
+			return accService.get(accId);
+		});
 	}
 }

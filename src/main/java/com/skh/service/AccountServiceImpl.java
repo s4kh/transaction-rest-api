@@ -1,4 +1,4 @@
-package com.skh.services;
+package com.skh.service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -17,7 +17,6 @@ public class AccountServiceImpl implements AccountService {
 		long accId = accountIdGenerator.incrementAndGet();
 		Account newAcc = new Account(accId, currency, balance);
 		accounts.put(accId, newAcc);
-
 		return newAcc;
 	}
 
