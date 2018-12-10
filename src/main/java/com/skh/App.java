@@ -9,6 +9,11 @@ public class App {
 
 	private static AccountService accService;
 	private static TransactionService trxService;
+	
+	public App(AccountService accService, TransactionService trxService) {
+		this.accService = accService;
+		this.trxService = trxService;
+	}
 
 	public static void main(String[] args) {
 
