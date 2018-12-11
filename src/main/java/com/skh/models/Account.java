@@ -36,4 +36,9 @@ public class Account {
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
+
+	@Override
+	public String toString() {
+		return "Account id: " + this.id + ", currency: " + this.currency + ", balance: " + this.balance;
+	}
 }

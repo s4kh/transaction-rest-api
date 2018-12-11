@@ -17,6 +17,7 @@ public class AccountServiceImpl implements AccountService {
 		long accId = accountIdGenerator.incrementAndGet();
 		Account newAcc = new Account(accId, currency, balance);
 		accounts.put(accId, newAcc);
+		System.out.println(newAcc);
 		
 		return newAcc;
 	}

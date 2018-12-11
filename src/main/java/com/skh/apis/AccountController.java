@@ -20,9 +20,11 @@ public class AccountController {
 		}, new JsonTransformer());
 
 		post("/account", (req, res) -> {
+			System.out.println(req.body());
 			Account account = new Gson().fromJson(req.body(), Account.class);
+			System.out.println(account);
 			accService.create(account.getCurrency(), account.getBalance());
-			return "";
+			return account;
 		}, new JsonTransformer());
 	}
 }
