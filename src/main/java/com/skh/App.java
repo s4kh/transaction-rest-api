@@ -27,5 +27,5 @@ public class App {
 			res.type("application/json");
 			res.body(new Gson().toJson(new ErrorResponse(e)));
 		});
-	}
+	}  
 }
