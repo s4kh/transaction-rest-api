@@ -1,10 +1,10 @@
-package com.skh.service;
+package com.skh.services;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.skh.model.Account;
+import com.skh.models.Account;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -17,6 +17,7 @@ public class AccountServiceImpl implements AccountService {
 		long accId = accountIdGenerator.incrementAndGet();
 		Account newAcc = new Account(accId, currency, balance);
 		accounts.put(accId, newAcc);
+		
 		return newAcc;
 	}
 

@@ -1,4 +1,4 @@
-package com.skh.model;
+package com.skh.models;
 
 import java.math.BigDecimal;
 

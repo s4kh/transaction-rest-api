@@ -1,8 +1,8 @@
-package com.skh.service;
+package com.skh.services;
 
 import java.math.BigDecimal;
 
-import com.skh.model.Account;
+import com.skh.models.Account;
 
 public interface AccountService {
 	

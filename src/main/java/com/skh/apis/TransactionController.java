@@ -1,10 +1,11 @@
-package com.skh.controllers;
+package com.skh.apis;
 
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
-import com.skh.model.Transaction;
-import com.skh.service.TransactionService;
+import com.skh.JsonTransformer;
+import com.skh.models.Transaction;
+import com.skh.services.TransactionService;
 
 public class TransactionController {
 	private TransactionService trxService;
@@ -17,7 +18,7 @@ public class TransactionController {
 		post("/transfer", (req, res) -> {
 			Transaction transaction = new Gson().fromJson(req.body(), Transaction.class);
 			this.trxService.make(transaction);
-			return "";
-		});
+			return res;
+		}, new JsonTransformer());
 	}
 }
