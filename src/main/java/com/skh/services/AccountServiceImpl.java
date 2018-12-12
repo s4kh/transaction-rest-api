@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.skh.exceptions.AccountDoesNotExistException;
 import com.skh.models.Account;
 
 public class AccountServiceImpl implements AccountService {
@@ -17,7 +18,6 @@ public class AccountServiceImpl implements AccountService {
 		long accId = accountIdGenerator.incrementAndGet();
 		Account newAcc = new Account(accId, currency, balance);
 		accounts.put(accId, newAcc);
-		System.out.println(newAcc);
 		
 		return newAcc;
 	}
@@ -26,7 +26,7 @@ public class AccountServiceImpl implements AccountService {
 	public Account get(long id) throws Exception {
 		Account account = accounts.get(id);
 		if (account == null) {
-			throw new Exception("Account with " + id + " id does not exist");
+			throw new AccountDoesNotExistException(id);
 		}
 
 		return account;
