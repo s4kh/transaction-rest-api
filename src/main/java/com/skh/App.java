@@ -16,7 +16,7 @@ public class App {
 		AccountServiceImpl accService = new AccountServiceImpl();
 		TransactionServiceImpl trxService = new TransactionServiceImpl(accService);
 		new AccountController(accService);
-		new TransactionController(trxService);
+		new TransactionController(trxService).getRoutes();
 
 		after((req, res) -> {
 			res.type("application/json");
@@ -27,5 +27,5 @@ public class App {
 			res.type("application/json");
 			res.body(new Gson().toJson(new ErrorResponse(e)));
 		});
-	}  
+	}
 }

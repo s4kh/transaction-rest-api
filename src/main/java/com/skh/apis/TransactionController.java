@@ -18,7 +18,7 @@ public class TransactionController {
 		post("/transfer", (req, res) -> {
 			Transaction transaction = new Gson().fromJson(req.body(), Transaction.class);
 			this.trxService.make(transaction);
-			return res;
+			return "Success";
 		}, new JsonTransformer());
 	}
 }
