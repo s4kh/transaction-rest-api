@@ -22,8 +22,9 @@ public class AccountController {
 
 		post("/account", (req, res) -> {
 			JsonObject jsonAccount = new Gson().fromJson(req.body(), JsonObject.class);
-			Account newAcc = accService.create(jsonAccount.get("currency").getAsString(), jsonAccount.get("amount").getAsBigDecimal());
-			
+			Account newAcc = accService.create(jsonAccount.get("currency").getAsString(),
+			    jsonAccount.get("amount").getAsBigDecimal());
+
 			return newAcc;
 		}, new JsonTransformer());
 	}
