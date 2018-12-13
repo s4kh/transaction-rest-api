@@ -13,6 +13,11 @@ public class Account {
 		this.balance = balance;
 	}
 
+	public Account(String currency, BigDecimal balance) {
+		this.currency = currency;
+		this.balance = balance;
+	}
+
 	public long getId() {
 		return id;
 	}

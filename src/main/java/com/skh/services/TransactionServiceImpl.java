@@ -34,10 +34,6 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new Exception("Empty transaction");
 		}
 
-		if (transaction.getFromAcc() == transaction.getToAcc()) {
-			throw new SameAccountTransactionException();
-		}
-
 		Account fromAcc = accService.get(transaction.getFromAcc());
 		Account toAcc = accService.get(transaction.getToAcc());
 		String trxCurrency = transaction.getCurrency();
@@ -50,20 +46,22 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new AccountDoesNotExistException(transaction.getToAcc());
 		}
 
+		if (fromAcc.getId() == toAcc.getId()) {
+			throw new SameAccountTransactionException();
+		}
+
 		if (!trxCurrency.equals(fromAcc.getCurrency()) && !trxCurrency.equals(toAcc.getCurrency())) {
 			throw new DifferentCurrencyException(fromAcc.getCurrency(), toAcc.getCurrency());
 		}
 
 		BigDecimal trxAmt = transaction.getAmount();
-		BigDecimal debitAmt = new BigDecimal(0);
-		BigDecimal creditAmt = new BigDecimal(0);
+		BigDecimal debitAmt = trxAmt;
+		BigDecimal creditAmt = trxAmt;
 
 		if (!trxCurrency.equals(fromAcc.getCurrency())) {
 			debitAmt = CurrencyConverter.convert(trxCurrency, fromAcc.getCurrency(), trxAmt);
-			creditAmt = trxAmt;
 		} else if (!trxCurrency.equals(toAcc.getCurrency())) {
 			creditAmt = CurrencyConverter.convert(trxCurrency, toAcc.getCurrency(), trxAmt);
-			debitAmt = trxAmt;
 		}
 		LOGGER.info("Transfering from {} - {} to {} + {}", fromAcc, debitAmt, toAcc, creditAmt);
 		transactBtwAccounts(fromAcc, toAcc, debitAmt, creditAmt);

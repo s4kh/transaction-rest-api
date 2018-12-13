@@ -8,6 +8,13 @@ public class Transaction {
 	private String currency;
 	private BigDecimal amount;
 
+	public Transaction(long fromAcc, long toAcc, String curr, BigDecimal amt) {
+		this.fromAcc = fromAcc;
+		this.toAcc = toAcc;
+		this.currency = curr;
+		this.amount = amt;
+	}
+
 	public long getFromAcc() {
 		return fromAcc;
 	}
