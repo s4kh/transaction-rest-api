@@ -1,6 +1,7 @@
 package com.skh.test.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
@@ -29,6 +30,11 @@ public class AccountControllerTest {
 		public void init() {
 			new AccountController(new AccountServiceImpl()).getRoutes(new CommonFilter());
 		}
+
+		@Override
+		public void destroy() {
+			System.out.println("Test application stopped");
+		}
 	}
 
 	@ClassRule
@@ -41,8 +47,10 @@ public class AccountControllerTest {
 		GetMethod get = testServer.get("/account/0", false);
 		HttpResponse httpResponse = testServer.execute(get);
 		Response response = gson.fromJson(new String(httpResponse.body()), ErrorResponse.class);
+		
 		assertEquals(400, httpResponse.code());
 		assertEquals("Account does not exist on id:0", response.getMessage());
+		assertNotNull(testServer.getApplication());
 	}
 
 	@Test
@@ -52,9 +60,11 @@ public class AccountControllerTest {
 		postMethod.addHeader("Content-Type", "application/json");
 		HttpResponse httpResponse = testServer.execute(postMethod);
 		Account actual = gson.fromJson(new String(httpResponse.body()), Account.class);
+		
 		assertEquals(200, httpResponse.code());
 		assertEquals(acc.getCurrency(), actual.getCurrency());
 		assertEquals(acc.getBalance(), actual.getBalance());
+		assertNotNull(testServer.getApplication());
 	}
 
 }

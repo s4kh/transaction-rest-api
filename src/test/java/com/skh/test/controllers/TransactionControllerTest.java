@@ -1,6 +1,7 @@
 package com.skh.test.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
@@ -29,12 +30,11 @@ public class TransactionControllerTest {
 	private static final AccountService accService = new AccountServiceImpl();
 	private static final Gson gson = new Gson();
 
-	public static class TransactionControllerTestSparkApplication implements SparkApplication {
+	public static class TransactionControllerTestApplication implements SparkApplication {
 		@Override
 		public void init() {
 			System.out.println("Test application initialized");
 			new TransactionController(new TransactionServiceImpl(accService)).getRoutes(new CommonFilter());
-			;
 		}
 
 		@Override
@@ -44,8 +44,8 @@ public class TransactionControllerTest {
 	}
 
 	@ClassRule
-	public static SparkServer<TransactionControllerTestSparkApplication> testServer = new SparkServer<>(
-	    TransactionControllerTest.TransactionControllerTestSparkApplication.class, 4567);
+	public static SparkServer<TransactionControllerTestApplication> testServer = new SparkServer<>(
+	    TransactionControllerTest.TransactionControllerTestApplication.class, 4567);
 
 	@Test
 	public void testSameAccountTransfer() throws Exception {
@@ -54,9 +54,10 @@ public class TransactionControllerTest {
 		PostMethod post = testServer.post("/transfer", new Gson().toJson(transaction), false);
 		HttpResponse httpResponse = testServer.execute(post);
 		ErrorResponse response = gson.fromJson(new String(httpResponse.body()), ErrorResponse.class);
+
 		assertEquals(400, httpResponse.code());
 		assertEquals("Can't transfer between same accounts", response.getMessage());
-
+		assertNotNull(testServer.getApplication());
 	}
 
 	@Test
