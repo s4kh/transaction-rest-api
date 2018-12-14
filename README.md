@@ -6,7 +6,7 @@ for money transfers between accounts.
  ## Run
  `java -jar`
  
- ## API
+ ## API success responses
   **POST** `/account`
   
   **REQUEST SAMPLE**
@@ -39,3 +39,26 @@ for money transfers between accounts.
     "currency": "MNT"
   }
  ```
+ 
+ **POST** `/transfer`
+ 
+   **REQUEST SAMPLE**
+  
+  ```json
+  {
+    "fromAcc": 1,
+    "toAcc": 2,
+    "amount": 1000,
+    "currency": "MNT"
+  }
+ ```
+ Note: Currency can be one of the fromAcc or toAcc's currency.
+ 
+  **RESPONSE SAMPLE**
+  
+  ```json
+  {
+    "message": "Success"
+  }
+ ```
+ 
