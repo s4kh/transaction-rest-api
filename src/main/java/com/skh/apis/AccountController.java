@@ -27,6 +27,8 @@ public class AccountController {
 			JsonObject jsonAccount = new Gson().fromJson(req.body(), JsonObject.class);
 			Account newAcc = accService.create(jsonAccount.get("currency").getAsString(),
 			    jsonAccount.get("balance").getAsBigDecimal());
+			// Account newAcc = accService.create(new Gson().fromJson(req.body(),
+			// Account.class));
 
 			return newAcc;
 		}, new JsonTransformer());

@@ -63,12 +63,12 @@ public class TransactionServiceImpl implements TransactionService {
 		} else if (!trxCurrency.equals(toAcc.getCurrency())) {
 			creditAmt = CurrencyConverter.convert(trxCurrency, toAcc.getCurrency(), trxAmt);
 		}
-		LOGGER.info("Transfering from {} - {} to {} + {}", fromAcc, debitAmt, toAcc, creditAmt);
+
 		transactBtwAccounts(fromAcc, toAcc, debitAmt, creditAmt);
 	}
 
 	private synchronized void transactBtwAccounts(Account fromAcc, Account toAcc, BigDecimal debitAmt,
-			BigDecimal creditAmt) throws InsufficientFundException {
+	    BigDecimal creditAmt) throws InsufficientFundException {
 		if (debitAmt.compareTo(fromAcc.getBalance()) > 0) {
 			throw new InsufficientFundException(fromAcc, debitAmt);
 		}
