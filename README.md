@@ -52,7 +52,7 @@ for money transfers between accounts.
     "currency": "MNT"
   }
  ```
- Note: Currency can be one of the fromAcc or toAcc's currency.
+ Note: Currency can be one of the `fromAcc` or `toAcc`'s currency.
  
   **RESPONSE SAMPLE**
   
