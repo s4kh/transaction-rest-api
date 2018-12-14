@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
+import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -23,6 +24,7 @@ import com.skh.services.AccountServiceImpl;
 import com.skh.services.TransactionServiceImpl;
 import com.skh.utils.CommonFilter;
 
+import spark.Spark;
 import spark.servlet.SparkApplication;
 
 public class TransactionControllerTest {
@@ -33,19 +35,13 @@ public class TransactionControllerTest {
 	public static class TransactionControllerTestApplication implements SparkApplication {
 		@Override
 		public void init() {
-			System.out.println("Test application initialized");
 			new TransactionController(new TransactionServiceImpl(accService)).getRoutes(new CommonFilter());
-		}
-
-		@Override
-		public void destroy() {
-			System.out.println("Test application stopped");
 		}
 	}
 
 	@ClassRule
 	public static SparkServer<TransactionControllerTestApplication> testServer = new SparkServer<>(
-	    TransactionControllerTest.TransactionControllerTestApplication.class, 4567);
+	    TransactionControllerTestApplication.class, 4567);
 
 	@Test
 	public void testSameAccountTransfer() throws Exception {
@@ -102,5 +98,11 @@ public class TransactionControllerTest {
 		assertEquals(400, httpResponse.code());
 		assertEquals("Transaction currency should be one of [" + fromAcc.getCurrency() + ", " + toAcc.getCurrency() + "]",
 		    response.getMessage());
+	}
+
+	@AfterClass
+	public static void afterClass() throws Exception {
+		Spark.stop();
+		Thread.sleep(1000); // Wait for it to stop, so other controller tests can start a server
 	}
 }

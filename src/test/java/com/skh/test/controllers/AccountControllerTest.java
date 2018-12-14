@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
+import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import com.skh.models.Account;
 import com.skh.services.AccountServiceImpl;
 import com.skh.utils.CommonFilter;
 
+import spark.Spark;
 import spark.servlet.SparkApplication;
 
 public class AccountControllerTest {
@@ -30,16 +32,11 @@ public class AccountControllerTest {
 		public void init() {
 			new AccountController(new AccountServiceImpl()).getRoutes(new CommonFilter());
 		}
-
-		@Override
-		public void destroy() {
-			System.out.println("Test application stopped");
-		}
 	}
 
 	@ClassRule
 	public static SparkServer<AccountControllerTestApplication> testServer = new SparkServer<>(
-	    AccountControllerTest.AccountControllerTestApplication.class, 4567);
+	    AccountControllerTestApplication.class, 4567);
 
 	@Test
 	public void testAccountDoesExist() throws Exception {
@@ -47,7 +44,7 @@ public class AccountControllerTest {
 		GetMethod get = testServer.get("/account/0", false);
 		HttpResponse httpResponse = testServer.execute(get);
 		Response response = gson.fromJson(new String(httpResponse.body()), ErrorResponse.class);
-		
+
 		assertEquals(400, httpResponse.code());
 		assertEquals("Account does not exist on id:0", response.getMessage());
 		assertNotNull(testServer.getApplication());
@@ -60,11 +57,17 @@ public class AccountControllerTest {
 		postMethod.addHeader("Content-Type", "application/json");
 		HttpResponse httpResponse = testServer.execute(postMethod);
 		Account actual = gson.fromJson(new String(httpResponse.body()), Account.class);
-		
+
 		assertEquals(200, httpResponse.code());
 		assertEquals(acc.getCurrency(), actual.getCurrency());
 		assertEquals(acc.getBalance(), actual.getBalance());
 		assertNotNull(testServer.getApplication());
+	}
+
+	@AfterClass
+	public static void afterClass() throws Exception {
+		Spark.stop();
+		Thread.sleep(1000);// Wait for it to finish stopping, so other controller tests can start a server
 	}
 
 }
