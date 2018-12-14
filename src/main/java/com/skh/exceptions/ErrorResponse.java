@@ -1,15 +1,8 @@
 package com.skh.exceptions;
 
-public class ErrorResponse {
-
-	private String message;
-
+public class ErrorResponse extends Response {
 
 	public ErrorResponse(Exception e) {
-		this.message = e.getMessage();
-	}
-
-	public String getMessage() {
-		return this.message;
+		super(e.getMessage());
 	}
 }
