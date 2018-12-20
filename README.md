@@ -4,7 +4,7 @@ for money transfers between accounts.
  ## Build
  `mvn clean package`
  ## Run
- `java -jar`
+ `java -jar target/quickstart-0.0.1-SNAPSHOT-jar-with-dependencies.jar` will spin up server on `:4567`
  
  ## API success responses
   **POST** `/account`
