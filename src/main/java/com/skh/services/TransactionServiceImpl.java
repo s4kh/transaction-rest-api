@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.skh.exceptions.AccountDoesNotExistException;
 import com.skh.exceptions.DifferentCurrencyException;
 import com.skh.exceptions.InsufficientFundException;
+import com.skh.exceptions.MinusTransactionAmountException;
 import com.skh.exceptions.SameAccountTransactionException;
 import com.skh.models.Account;
 import com.skh.models.Transaction;
@@ -25,13 +26,13 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public void make(Transaction transaction) throws Exception {
-		/**
-		 * TODO: check same account, check insufficient fund, check do accounts exist,
-		 * convert to currencies, lock
-		 */
 
 		if (transaction == null) {
 			throw new Exception("Empty transaction");
+		}
+
+		if (transaction.getAmount().compareTo(new BigDecimal(0)) < 0) {
+			throw new MinusTransactionAmountException(transaction.getAmount());
 		}
 
 		Account fromAcc = accService.get(transaction.getFromAcc());
@@ -64,6 +65,10 @@ public class TransactionServiceImpl implements TransactionService {
 			creditAmt = CurrencyConverter.convert(trxCurrency, toAcc.getCurrency(), trxAmt);
 		}
 
+		if (debitAmt.compareTo(BigDecimal.valueOf(-1)) == 0 || creditAmt.compareTo(BigDecimal.valueOf(-1)) == 0) {
+			throw new Exception("Currency server unavailable, try with same currency");
+		}
+
 		transactBtwAccounts(fromAcc, toAcc, debitAmt, creditAmt);
 	}
 
@@ -73,7 +78,6 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new InsufficientFundException(fromAcc, debitAmt);
 		}
 
-		// TODO: synchronize
 		fromAcc.setBalance(fromAcc.getBalance().subtract(debitAmt));
 		toAcc.setBalance(toAcc.getBalance().add(creditAmt));
 
